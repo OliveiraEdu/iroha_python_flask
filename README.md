@@ -47,6 +47,7 @@ root@40a0098150a7:/opt/iroha_data#
 
 ```
 
+
 #Screenshots
 
 ![image](static/img/2.png)
