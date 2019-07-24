@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hyperledger IROHA Python Test</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="row">
+            <div class="col">
+                <div class="jumbotron jumbotron-h1">
+                          <h1><strong>Hyperledger IROHA Python Test</strong></h1>
+                          <h5 align="right"><span class="badge badge-success">BLOCKCHAIN tech</span></h5>
+                  </div>
+            </div>
+            </div>
+            <hr>
+                <!-- Button with the link to the other html file. In this case a link between network.html and node.html. -->
+                <!-- COPY AND PASTE FOR A NEW BUTTON -->
+            <hr>
+                <div class="row">
+                    <div class="col">
+                        <ul class="nav nav-pills nav-justified">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Iroha Admin</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/iroha_accounts">Iroha Accounts</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/iroha_send">Iroha Send TX</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/iroha_understanding">Iroha</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            <hr>
+              <!-- COPY AND PASTE FOR A NEW BUTTON -->
+              <!-- Button with the link to the other html file. In this case a link between network.html and node.html. -->
+            <div class="row my-3">
+                <div class="col">
+                  <div class="jumbotron jumbotron-user">
+                      <div class="container mt-3">
+                            <select class="custom-select custom-select-lg mb-3"  v-model="option">
+                                <option v-for="user in users">{{ user }}</option>
+                            </select>
+                        </div>
+                      <div class="btn-group-vertical btn-group-justified" style="width: 100%;">
+                          <button type="button" class="btn btn-success btn-lg btn-block" @click="onLoadData">Show Account information --- {{ option }}</button>
+                      </div>
+                  </div>
+                </div>
+            </div>
+            <hr>
+            <div v-if="warning" class="alert alert-warning" role="alert">
+                {{ warning }}
+            </div>
+            <div v-if="success" class="alert alert-success" role="alert">
+                {{ success }}
+            </div>
+            <div v-if="error" class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            <hr>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                users: [],
+                option: "",
+                error: null,
+                success: null,
+                warning: null
+            },
+            mounted:function(){
+                this.bodyOnLoad() //method1 will execute at pageload
+            },
+            methods: {
+                onLoadData: function () {
+                    // Send user to backend
+                    var vm = this;
+                    axios.post('/account_info', {
+                        user: this.option
+                    })
+                        .then(function(response) {
+                            vm.error = null;
+                            vm.success = response.data.message;
+                            vm.warning = response.data.message2;
+                        })
+                        .catch(function (error) {
+                            vm.success = null;
+                            vm.error = error.response.data.message;
+                            vm.warning = null;
+                        });
+                },
+                bodyOnLoad: function () {
+                    var vm = this;
+                    axios.post('/users')
+                        .then(function(response) {
+                            vm.users = response.data.data;
+                            vm.error = null;
+                            vm.success = null;
+                            vm.warning = null;
+                        })
+                        .catch(function (error) {
+                            vm.success = null;
+                            vm.error = error.response.data.message;
+                            vm.warning = null;
+                        });
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
