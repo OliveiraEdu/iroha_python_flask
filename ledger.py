@@ -4,7 +4,7 @@ from iroha import Iroha, IrohaGrpc, IrohaCrypto
 import os
 import config
 
-IROHA_HOST_ADDR = os.getenv('IROHA_HOST_ADDR', '192.168.1.87')
+IROHA_HOST_ADDR = os.getenv('IROHA_HOST_ADDR', '10.0.0.2')
 IROHA_PORT = os.getenv('IROHA_PORT', '50051')
 ADMIN_ACCOUNT_ID = os.getenv('ADMIN_ACCOUNT_ID', 'admin@test')
 ADMIN_PRIVATE_KEY = os.getenv('ADMIN_PRIVATE_KEY', 'f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70')
