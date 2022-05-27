@@ -1,4 +1,4 @@
-import re
+import re #regular expressions
 
 # !!!! ONLY LOWER CASE !!!! bug in iroha.
 sawmill_names = ["colombia", "venezuela", "brazil", "ecuador"]
