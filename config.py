@@ -1,6 +1,3 @@
-import re #regular expressions
-import os
-
 import os
 
 class Config(object):
