@@ -1,12 +1,8 @@
 import re #regular expressions
+import os
 
-# !!!! ONLY LOWER CASE !!!! bug in iroha.
-sawmill_names = ["colombia", "venezuela", "brazil", "ecuador"]
+import os
 
-woods = ["oro", "petroleo", "gas", "dolares"]
-
-
-def to_lower_case_only_letters(string):
-    string = string.lower()
-    string = re.sub(r'[^a-z0-9]', '', string)
-    return string
+class Config(object):
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
+    
