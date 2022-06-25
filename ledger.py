@@ -78,6 +78,13 @@ class Ledger:
         IrohaCrypto.sign_transaction(tx, self.admin_private_key)
         print(self.send_transaction_and_log_status(tx))
         
+    def set_key_pair_to_user(self, account_input, key_input, value_input):
+        print('Sets Key/Value pair...')
+        tx = self.iroha.transaction([self.iroha.command('SetAccountDetail',
+        account_id = account_input, key = key_input, value = value_input)])
+        IrohaCrypto.sign_transaction(tx, self.admin_private_key)
+        print(self.send_transaction_and_log_status(tx))
+        
     def create_account(self, username_input, domain_input):
         print('Create Account...')
         tx = self.iroha.transaction([
