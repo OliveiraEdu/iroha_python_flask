@@ -1,0 +1,24 @@
+{% block content %}
+    <h1>Sign Up</h1>
+<form method="POST" action="/submit_key_value">
+    {{ form.hidden_tag() }}
+    {{ form.account.label }} {{ form.account(size=20) }}
+    
+    {{ form.hidden_tag() }}
+    {{ form.key.label }} {{ form.key(size=20) }}
+    
+    {{ form.hidden_tag() }}
+    {{ form.value.label }} {{ form.value(size=20) }}
+
+    <input type="submit" value="Go">
+    
+  
+    {% if form.account.errors %}
+    <ul class="errors">
+    {% for error in form.name.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+</form>
+{% endblock %}
