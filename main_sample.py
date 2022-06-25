@@ -21,11 +21,16 @@ class MyForm(FlaskForm):
 class MyForm1(FlaskForm):
     name = StringField('name', validators=[DataRequired()])
     domain = StringField('domain', validators=[DataRequired()])
+    
+class set_key_value_form(FlaskForm):
+    account = StringField('Account Id:', validators=[DataRequired()])
+    key = StringField('Key:', validators=[DataRequired()])
+    value = StringField('Value:', validators=[DataRequired()])
+    
 
 app = Flask(__name__)
 app.config.from_object(Config)
 CORS(app)
-
 
 ledger = Ledger()
 history = []
@@ -44,6 +49,22 @@ def submit():
         ledger.create_account(username_input, domain_input)
         return redirect('/submit')
     return render_template('submit.html', form=form)
+    
+@app.route('/set_key_value', methods=['GET', 'POST'])
+def set_key_value():
+    form = set_key_value_form()
+    return render_template('set_key_value.html', form=form)
+    
+@app.route('/submit_key_value', methods=['GET', 'POST'])
+def submit_key_value():
+    form = set_key_value_form()
+    if form.validate_on_submit():
+        account_input = form.account.data
+        key_input = form.key.data
+        value_input = form.value.data
+        ledger.set_key_pair_to_user(account_input, key_input, value_input)
+        return redirect('/submit_key_value')
+    return render_template('submit_key_value.html', form=form)
 
 @app.route('/', methods=['GET'])  # Decorator
 def iroha_admin():
