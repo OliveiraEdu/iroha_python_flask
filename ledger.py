@@ -36,16 +36,16 @@ class Ledger:
         result_dict['admin@test'] = data.detail
         return result_dict
 
-    def get_user_details(self):
+    def get_user_details(self, username_input):
         result_dict = {}
-        query = self.iroha.query('GetAccountDetail', account_id=f'userone@domain')
+        query = self.iroha.query('GetAccountDetail', account_id = username_input)
         IrohaCrypto.sign_query(query, self.admin_private_key)
 
         response = self.net.send_query(query)
         data = response.account_detail_response
         print(data)
-        print('Account id = {}, details = {}'.format('userone@domain', data.detail))
-        result_dict['userone@domain'] = data.detail
+        print('Account id = {}, details = {}'.format(username_input, data.detail))
+        result_dict[username_input] = data.detail
         return result_dict
 
     def get_user_account_assets(self):
@@ -91,5 +91,9 @@ class Ledger:
             self.iroha.command('CreateAccount', account_name = username_input, domain_id = domain_input,
                                public_key=self.public_key)
         ])
+        IrohaCrypto.sign_transaction(tx, self.admin_private_key)
+        print(self.send_transaction_and_log_status(tx))
+        
+        tx = iroha.transaction([self.iroha.command('GrantPermission', account_id='admin@test', permission=can_set_my_account_detail)], creator_account=username_input+'@'+domain_input')
         IrohaCrypto.sign_transaction(tx, self.admin_private_key)
         print(self.send_transaction_and_log_status(tx))
