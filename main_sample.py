@@ -22,6 +22,9 @@ class MyForm1(FlaskForm):
     name = StringField('name', validators=[DataRequired()])
     domain = StringField('domain', validators=[DataRequired()])
     
+class MyForm2(FlaskForm):
+    name = StringField('name', validators=[DataRequired()])
+    
 class set_key_value_form(FlaskForm):
     account = StringField('Account Id:', validators=[DataRequired()])
     key = StringField('Key:', validators=[DataRequired()])
@@ -91,17 +94,7 @@ def admin_details():
             'message2': 'Details loaded.'            
         }
     return jsonify(response), 200
-
-@app.route('/user_details', methods=['GET'])
-def user_details():
-    details = ledger.get_user_details()
-    print("details= ", details)
-    response = {
-            'message': details,
-            'message2': 'Details loaded.'            
-        }
-    return jsonify(response), 200
-      
+   
 @app.route('/user_assets', methods=['GET'])
 def user_assets():
     details = ledger.get_user_account_assets()
@@ -143,6 +136,23 @@ def index():
 		return redirect(url_for('index'))
 	return render_template('upload.html')
 
+@app.route('/user_details_form', methods=['GET', 'POST'])
+def user_details_form():
+    form = MyForm2()
+    return render_template('user_details_form.html', form=form)
+
+@app.route('/user_details', methods=['GET', 'POST'])
+def user_details():
+    form = MyForm2()
+    username_input = form.name.data
+    details = ledger.get_user_details(username_input)
+    print("details= ", details)
+    response = {
+            'message': details,
+            'message2': 'Details loaded.'            
+       }
+    return jsonify(response), 200
+    
 if __name__ == '__main__':
     #ledger.init_ledger()
     app.run('0.0.0.0')
