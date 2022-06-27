@@ -100,7 +100,6 @@ class Ledger:
         print(self.send_transaction_and_log_status(tx))
 
     #User needs to sign transaction with own private key
-    #How to generate the user private key?
     def grant_permission(self, full_name):
         print('Grant Permission...')
         tx = self.iroha.transaction([self.iroha.command('GrantPermission', account_id='admin@test', permission=can_set_my_account_detail)], creator_account = full_name)
