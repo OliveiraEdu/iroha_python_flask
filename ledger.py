@@ -1,13 +1,18 @@
 import binascii
 from random import randint
 from iroha import Iroha, IrohaGrpc, IrohaCrypto
+from iroha.primitive_pb2 import can_set_my_account_detail
 import os
 import config
+
 
 IROHA_HOST_ADDR = os.getenv('IROHA_HOST_ADDR', '10.0.0.2')
 IROHA_PORT = os.getenv('IROHA_PORT', '50051')
 ADMIN_ACCOUNT_ID = os.getenv('ADMIN_ACCOUNT_ID', 'admin@test')
 ADMIN_PRIVATE_KEY = os.getenv('ADMIN_PRIVATE_KEY', 'f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70')
+
+
+
 
 class Ledger:
     def __init__(self):
@@ -93,7 +98,12 @@ class Ledger:
         ])
         IrohaCrypto.sign_transaction(tx, self.admin_private_key)
         print(self.send_transaction_and_log_status(tx))
-        
-        tx = iroha.transaction([self.iroha.command('GrantPermission', account_id='admin@test', permission=can_set_my_account_detail)], creator_account=username_input+'@'+domain_input')
-        IrohaCrypto.sign_transaction(tx, self.admin_private_key)
+
+    #User needs to sign transaction with own private key
+    #How to generate the user private key?
+    def grant_permission(self, full_name):
+        print('Grant Permission...')
+        tx = self.iroha.transaction([self.iroha.command('GrantPermission', account_id='admin@test', permission=can_set_my_account_detail)], creator_account = full_name)
+        IrohaCrypto.sign_transaction(tx, self.__private_key)
         print(self.send_transaction_and_log_status(tx))
+
