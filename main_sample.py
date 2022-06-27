@@ -120,6 +120,7 @@ def admin_assets():
         }
     return jsonify(response), 200 
     
+#To Do - Include form for user, domain and file inputs, using set_key_pair_to_user()
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
 	global value_1
