@@ -4,6 +4,7 @@ from flask_cors import CORS
 import config
 from config import Config
 from ledger import Ledger
+#import time
 
 # Python program to find SHA256 hash string of a file
 import hashlib
@@ -49,7 +50,11 @@ def submit():
     if form.validate_on_submit():
         username_input = form.name.data
         domain_input = form.domain.data
+        full_name = username_input+'@'+domain_input
+        print(full_name)
         ledger.create_account(username_input, domain_input)
+        #time.sleep(10)
+        ledger.grant_permission(full_name)
         return redirect('/submit')
     return render_template('submit.html', form=form)
     
@@ -70,8 +75,8 @@ def submit_key_value():
     return render_template('submit_key_value.html', form=form)
 
 @app.route('/', methods=['GET'])  # Decorator
-def iroha_admin():
-    return send_from_directory('templates', 'iroha_admin.html')
+def index():
+    return render_template('index.html')
 
 @app.route('/iroha_user', methods=['GET'])  # Decorator
 def iroha_user():
@@ -116,7 +121,7 @@ def admin_assets():
     return jsonify(response), 200 
     
 @app.route('/upload', methods=['GET', 'POST'])
-def index():
+def upload():
 	global value_1
 	if request.method == 'POST':
 		uploaded_file = request.files['file']
