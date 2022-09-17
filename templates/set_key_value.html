@@ -1,5 +1,7 @@
+{% extends "base.html" %}
+
 {% block content %}
-    <h1>Sign Up</h1>
+    <h1>Set Key Value</h1>
 <form method="POST" action="/submit_key_value">
     {{ form.hidden_tag() }}
     {{ form.account.label }} {{ form.account(size=20) }}
